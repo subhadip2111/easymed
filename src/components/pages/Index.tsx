@@ -6,12 +6,13 @@ import { Pill } from "lucide-react";
 import heroImage from "@/assets/hero-pharmacy.jpg";
 import { Footer } from "../Footer";
 import { useToast } from "../hooks/use-toast";
-import { AdSection } from "../AdSection";
+// import { AdSection } from "../AdSection";
 import { MedicineCard } from "../MedicineCard";
 import { SearchBar } from "../SearchBar";
 import { PrescriptionUpload } from "../PrescriptionUpload";
 import { ReviewsSection } from "../ReviewsSection";
-
+import { AdSection } from "../AdSection";
+  
 interface Medicine {
   name: string;
   composition: string;
