@@ -1,4 +1,5 @@
 import { Heart } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
@@ -51,6 +52,9 @@ export const Footer = () => {
                   Contact Us
                 </a>
               </li>
+              <Link to="/blogs" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                Blogs
+              </Link>
             </ul>
           </div>
           
