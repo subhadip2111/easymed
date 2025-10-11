@@ -38,19 +38,19 @@ export const Footer = () => {
             <h4 className="font-semibold text-foreground mb-4">Legal</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                <Link to="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                <Link to="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                <Link to="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                   Contact Us
-                </a>
+                </Link>
               </li>
               <Link to="/blogs" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                 Blogs
