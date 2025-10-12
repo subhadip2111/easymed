@@ -78,8 +78,10 @@ export const Feeds: React.FC = () => {
                   className="adsbygoogle"
                   style={{ display: "block" }}
                   data-ad-client="ca-pub-1888814360460028"
-                  data-ad-slot="1234567890" // ⚠️ Replace with your actual AdSense slot ID
-                  data-ad-format="auto"
+                       data-ad-layout-key="-6t+ed+2i-1n-4w"
+     data-ad-format="fluid"
+
+                  data-ad-slot="9066315381" // ⚠️ Replace with your actual AdSense slot ID
                   data-full-width-responsive="true"
                 ></ins>
               </div>
@@ -90,3 +92,18 @@ export const Feeds: React.FC = () => {
     </div>
   );
 };
+
+
+/**
+ * <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1888814360460028"
+     crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-format="fluid"
+     data-ad-layout-key="-6t+ed+2i-1n-4w"
+     data-ad-client="ca-pub-1888814360460028"
+     data-ad-slot="9066315381"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+ */
