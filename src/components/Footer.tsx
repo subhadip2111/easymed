@@ -27,9 +27,11 @@ export const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
-                  FAQs
-                </a>
+           
+
+                   <Link to="/feeds" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                Feeds
+              </Link>
               </li>
             </ul>
           </div>
@@ -55,6 +57,7 @@ export const Footer = () => {
               <Link to="/blogs" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                 Blogs
               </Link>
+             
             </ul>
           </div>
           
