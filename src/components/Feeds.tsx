@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const videos = [
   { title: "Node.js Crash Course", url: "https://www.youtube.com/embed/fBNz5xF-Kx4" },
@@ -24,29 +24,67 @@ const videos = [
 ];
 
 export const Feeds: React.FC = () => {
+  // Load Google Ads script dynamically
+  useEffect(() => {
+    if (!document.querySelector('script[src*="adsbygoogle.js"]')) {
+      const script = document.createElement("script");
+      script.src =
+        "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1888814360460028";
+      script.async = true;
+      script.crossOrigin = "anonymous";
+      document.head.appendChild(script);
+    }
+
+    const interval = setInterval(() => {
+      if ((window as any).adsbygoogle) {
+        try {
+          (window as any).adsbygoogle.push({});
+        } catch (e) {
+          console.error("Ads error", e);
+        }
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="p-6 bg-gray-900 min-h-screen text-white">
-      <h1 className="text-3xl font-bold mb-6 text-center">🎥 Developer Video Gallery</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="bg-gray-900 min-h-screen text-white p-6">
+      <h1 className="text-3xl font-bold mb-6 text-center">🎥 Developer Video Feed</h1>
+      <div className="flex flex-col gap-8 max-w-4xl mx-auto">
         {videos.map((video, index) => (
-          <div
-            key={index}
-            className="bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-700 hover:scale-105 transition-transform"
-          >
-            <div className="aspect-video">
-              <iframe
-                width="100%"
-                height="100%"
-                src={video.url}
-                title={video.title}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
+          <React.Fragment key={index}>
+            {/* Video Card */}
+            <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg border border-gray-700">
+              <div className="aspect-video">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={video.url}
+                  title={video.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+              <div className="p-4">
+                <h2 className="text-lg font-semibold">{video.title}</h2>
+              </div>
             </div>
-            <div className="p-3">
-              <h2 className="text-lg font-semibold">{video.title}</h2>
-            </div>
-          </div>
+
+            {/* Show ad after every 5 videos */}
+            {(index + 1) % 5 === 0 && (
+              <div className="bg-gray-800 rounded-lg shadow-lg p-4 flex justify-center">
+                <ins
+                  className="adsbygoogle"
+                  style={{ display: "block" }}
+                  data-ad-client="ca-pub-1888814360460028"
+                  data-ad-slot="1234567890" // ⚠️ Replace with your actual AdSense slot ID
+                  data-ad-format="auto"
+                  data-full-width-responsive="true"
+                ></ins>
+              </div>
+            )}
+          </React.Fragment>
         ))}
       </div>
     </div>
