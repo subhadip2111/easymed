@@ -33,7 +33,7 @@ export const MedicineCard = ({ name, composition, buyLinks, isSimilar }: Medicin
         )}
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
+        <div className="space-y-2"> 
           <p className="text-sm font-semibold text-foreground">Available at:</p>
           <div className="space-y-3">
             {buyLinks.map((link, index) => (

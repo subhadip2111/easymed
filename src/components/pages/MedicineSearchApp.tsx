@@ -7,6 +7,7 @@ import { BulkMedicineCard } from "./BulkMedicineCard";
 import { AdSection } from "../AdSection";
 import { ReviewsSection } from "../ReviewsSection";
 import { Footer } from "../Footer";
+import { Link } from "react-router-dom";
 
 
 interface BuyLink {
@@ -165,9 +166,11 @@ export default function MedicineSearchApp() {
             <Pill className="h-8 w-8 text-primary animate-float" />
             <div className="absolute inset-0 blur-xl bg-primary/20 animate-glow rounded-full" />
           </div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            EasyMed
-          </h1>
+          <Link to="/">
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              EasyMed
+            </h1>
+          </Link>
         </div>
       </header>
 

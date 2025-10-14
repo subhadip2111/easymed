@@ -17,21 +17,21 @@ export const Footer = () => {
             <h4 className="font-semibold text-foreground mb-4">Quick Links</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                <a href="/about-us" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                   About Us
                 </a>
               </li>
               <li>
-                <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                <a href="/how-its-work" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                   How It Works
                 </a>
               </li>
               <li>
            
 
-                   <Link to="/feeds" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                   {/* <Link to="/feeds" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                 Feeds
-              </Link>
+              </Link> */}
               </li>
             </ul>
           </div>
@@ -40,23 +40,23 @@ export const Footer = () => {
             <h4 className="font-semibold text-foreground mb-4">Legal</h4>
             <ul className="space-y-2">
               <li>
-                <Link to="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                <Link to="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                <Link to="/terms-conditions" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link to="#" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+                <Link to="/contact-us" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                   Contact Us
                 </Link>
               </li>
-              <Link to="/blogs" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
+              {/* <Link to="/blogs" className="text-sm text-muted-foreground hover:text-primary transition-smooth">
                 Blogs
-              </Link>
+              </Link> */}
              
             </ul>
           </div>
