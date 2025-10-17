@@ -24,6 +24,7 @@ interface MedicineCardProps {
 }
 
 export function MedicineCard({ medicine, isPrimary = false }: MedicineCardProps) {
+  console.log(" medicine",medicine)
   return (
     <div className={`group bg-white rounded-2xl shadow-lg hover:shadow-2xl overflow-hidden border-2 transition-all duration-300 hover:-translate-y-1 ${
       isPrimary 
@@ -34,9 +35,9 @@ export function MedicineCard({ medicine, isPrimary = false }: MedicineCardProps)
         {/* Header */}
         <div className="flex items-start justify-between mb-6">
           <div className="flex-1">
-            <h4 className="text-2xl font-bold text-foreground mb-2">{medicine.name}</h4>
-            {medicine.description && (
-              <p className="text-sm text-muted-foreground leading-relaxed">{medicine.description}</p>
+            <h4 className="text-2xl font-bold text-foreground mb-2">{medicine?.name}</h4>
+            {medicine?.description && (
+              <p className="text-sm text-muted-foreground leading-relaxed">{medicine?.description}</p>
             )}
           </div>
           {isPrimary && (
@@ -47,14 +48,14 @@ export function MedicineCard({ medicine, isPrimary = false }: MedicineCardProps)
         </div>
 
         {/* Alternatives */}
-        {medicine.alternatives.length > 0 && (
+        {medicine?.alternatives?.length > 0 && (
           <div className="mb-6 p-4 bg-gradient-to-br from-muted/50 to-muted/30 rounded-xl border border-border/50">
             <p className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
               <span className="h-1.5 w-1.5 bg-primary rounded-full" />
               Alternative Names
             </p>
             <div className="flex flex-wrap gap-2">
-              {medicine.alternatives.slice(0, 6).map((alt, idx) => (
+              {medicine.alternatives?.slice(0, 6).map((alt, idx) => (
                 <span 
                   key={idx} 
                   className="px-3 py-1.5 bg-white border border-border rounded-lg text-xs font-medium text-foreground hover:border-primary/30 hover:shadow-sm transition-all"
@@ -62,9 +63,9 @@ export function MedicineCard({ medicine, isPrimary = false }: MedicineCardProps)
                   {alt}
                 </span>
               ))}
-              {medicine.alternatives.length > 6 && (
+              {medicine.alternatives?.length > 6 && (
                 <span className="px-3 py-1.5 text-xs text-muted-foreground font-medium">
-                  +{medicine.alternatives.length - 6} more
+                  +{medicine.alternatives?.length - 6} more
                 </span>
               )}
             </div>
@@ -72,17 +73,17 @@ export function MedicineCard({ medicine, isPrimary = false }: MedicineCardProps)
         )}
 
         {/* Buy Links */}
-        {medicine.buyLinks.length > 0 ? (
+        {medicine?.buyLinks?.length > 0 ? (
           <div>
             <h5 className="font-bold text-foreground mb-4 flex items-center gap-2 text-lg">
               <ShoppingCart className="h-5 w-5 text-primary" />
               Where to Buy 
               <span className="text-sm font-semibold text-muted-foreground">
-                ({medicine.buyLinks.length} options)
+                ({medicine?.buyLinks?.length} options)
               </span>
             </h5>
             <div className="space-y-3 max-h-96 overflow-y-auto pr-2 custom-scrollbar">
-              {medicine.buyLinks.map((link, idx) => (
+              {medicine?.buyLinks?.map((link, idx) => (
                 <BuyLinkItem key={idx} link={link} />
               ))}
             </div>

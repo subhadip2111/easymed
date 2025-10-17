@@ -37,11 +37,13 @@ interface BulkMedicineItem {
   alternativeNames: string[];
 }
 
-export const searchMedicines = async (query: string) => {
+export const searchMedicines = async (query: string,location:string) => {
   try {
     const response = await axios.post(
       `${import.meta.env.VITE_BACKEND_URL}/api/medicine/search`,
-      { name: query }, 
+      { name: query,
+        location
+       }, 
       {
         headers: {
           "Content-Type": "application/json", // ✅ important for backend to parse

@@ -14,11 +14,11 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    proxy: {
-      '/': {
-        target: process.env.VITE_BACKEND_URL,
-        changeOrigin: true
-      }
-    }
+    // proxy: {
+    //   '/': {
+    //     target: process.env.VITE_BACKEND_PROD_URL,
+    //     changeOrigin: true
+    //   }
+    // }
   }
 })

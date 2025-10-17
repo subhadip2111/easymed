@@ -9,6 +9,7 @@ import { ReviewsSection } from "../ReviewsSection";
 import { Footer } from "../Footer";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
+import UserLocation from "./UserLocation";
 
 
 interface BuyLink {
@@ -143,7 +144,9 @@ export default function MedicineSearchApp() {
     setError("");
 
     try {
-      const data = await searchMedicines(searchQuery);
+      const locationName = localStorage.getItem("locationName");
+      const data = await searchMedicines(searchQuery,locationName || "");
+      data.query = searchQuery;
       setApiData(data);
     } catch (err) {
       setError("Failed to fetch medicine data. Please try again.");
@@ -196,6 +199,8 @@ export default function MedicineSearchApp() {
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               EasyMed
             </h1>
+            <UserLocation/>
+
           </div>
 
           {accessToken && (
@@ -208,7 +213,6 @@ export default function MedicineSearchApp() {
           )}
         </div>
       </header>
-
       {!accessToken ? (
         // Login Required Screen
         <section className="py-16 px-4 min-h-[80vh] flex items-center justify-center">
