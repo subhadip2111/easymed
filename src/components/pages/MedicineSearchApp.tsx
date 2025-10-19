@@ -35,6 +35,7 @@ interface ApiResponse {
   similarMedicines: Medicine[];
   disclaimer: string;
   retrievedAt: string;
+  comparisonSummary:string | null;
 }
 
 interface BulkMedicine {
@@ -56,6 +57,8 @@ export default function MedicineSearchApp() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [bulkResults, setBulkResults] = useState<BulkMedicine[]>([]);
   const [isUploadMode, setIsUploadMode] = useState(false);
+  const [displayedSummary, setDisplayedSummary] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -122,10 +125,33 @@ export default function MedicineSearchApp() {
   const handleUploadClick = () => {
     fileInputRef.current?.click();
   };
+  
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
     setAccessToken(token);
   }, []);
+
+  // Typing animation effect for AI summary
+  useEffect(() => {
+    if (apiData?.comparisonSummary) {
+      setIsTyping(true);
+      setDisplayedSummary("");
+      const fullText = apiData.comparisonSummary;
+      let index = 0;
+
+      const typingInterval = setInterval(() => {
+        if (index < fullText.length) {
+          setDisplayedSummary(fullText.substring(0, index + 1));
+          index++;
+        } else {
+          setIsTyping(false);
+          clearInterval(typingInterval);
+        }
+      }, 20); // Adjust speed here (lower = faster)
+
+      return () => clearInterval(typingInterval);
+    }
+  }, [apiData?.comparisonSummary]);
 
 
   const checkAuth = () => {
@@ -135,6 +161,7 @@ export default function MedicineSearchApp() {
     }
     return true;
   };
+  
   const handleSearch = async () => {
     if (!checkAuth()) return;
 
@@ -173,6 +200,7 @@ export default function MedicineSearchApp() {
     const data = await bulkSearchMedicinesThroughtInternet(medicines);
     return data;
   };
+  
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     setAccessToken(null);
@@ -180,6 +208,7 @@ export default function MedicineSearchApp() {
     setBulkResults([]);
     setSearchQuery("");
   };
+  
   if (isLoading) {
     return <Loader />;
   }
@@ -213,6 +242,7 @@ export default function MedicineSearchApp() {
           )}
         </div>
       </header>
+      
       {!accessToken ? (
         // Login Required Screen
         <section className="py-16 px-4 min-h-[80vh] flex items-center justify-center">
@@ -363,9 +393,67 @@ export default function MedicineSearchApp() {
       {/* Results Section - Only shown when logged in */}
       {accessToken && apiData && (
         <div className="max-w-7xl mx-auto px-4 pb-16">
-          <div className="bg-gradient-to-r from-warning/10 to-warning/5 border-2 border-warning/30 rounded-xl p-5 mb-10 shadow-md">
-            <p className="text-sm text-warning-foreground font-medium">{apiData.disclaimer}</p>
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-6 mb-10 shadow-lg">
+            <div className="flex items-start gap-3">
+              <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-amber-900 font-medium leading-relaxed">{apiData.disclaimer}</p>
+            </div>
           </div>
+
+          {/* AI Summary Box with Typing Animation */}
+          {apiData.comparisonSummary && (
+            <div className="mb-12 relative overflow-hidden">
+              {/* Animated gradient background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 animate-gradient-shift opacity-60" />
+              
+              <div className="relative bg-white/80 backdrop-blur-sm border-2 border-blue-300/50 rounded-3xl p-8 shadow-2xl">
+                {/* Decorative elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-400/20 to-purple-400/20 rounded-full blur-3xl" />
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-gradient-to-tr from-indigo-400/20 to-blue-400/20 rounded-full blur-2xl" />
+                
+                <div className="relative flex items-start gap-4">
+                  {/* AI Icon with pulse animation */}
+                  <div className="relative flex-shrink-0">
+                    <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl p-3 shadow-lg">
+                      <svg className="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                    </div>
+                    {isTyping && (
+                      <div className="absolute inset-0 bg-blue-400 rounded-2xl animate-ping opacity-20" />
+                    )}
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-3 mb-4">
+                      <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                      Search  Analysis
+                      </h3>
+                      {isTyping && (
+                        <div className="flex gap-1">
+                          <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                          <span className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                          <span className="w-2 h-2 bg-purple-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="prose prose-sm max-w-none">
+                      <p className="text-gray-800 text-base leading-relaxed whitespace-pre-line">
+                        {displayedSummary}
+                        {isTyping && (
+                          <span className="inline-block w-0.5 h-5 bg-blue-600 ml-1 animate-pulse" />
+                        )}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom shine effect */}
+                <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-300 to-transparent" />
+              </div>
+            </div>
+          )}
 
           <div className="mb-16">
             <h3 className="text-3xl font-bold text-foreground mb-8">
@@ -472,6 +560,50 @@ export default function MedicineSearchApp() {
       <AdSection />
       <ReviewsSection />
       <Footer />
+
+      {/* Custom animations */}
+      <style>{`
+        @keyframes gradient-shift {
+          0%, 100% { transform: translate(0, 0); }
+          25% { transform: translate(5%, -5%); }
+          50% { transform: translate(-5%, 5%); }
+          75% { transform: translate(5%, 5%); }
+        }
+        
+        .animate-gradient-shift {
+          animation: gradient-shift 8s ease-in-out infinite;
+        }
+
+        @keyframes fade-in {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .animate-fade-in {
+          animation: fade-in 0.5s ease-out;
+        }
+
+        @keyframes scale-in {
+          from {
+            opacity: 0;
+            transform: scale(0.9);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        .animate-scale-in {
+          animation: scale-in 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 }
