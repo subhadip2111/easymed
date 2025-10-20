@@ -226,7 +226,7 @@ export default function MedicineSearchApp() {
               <div className="absolute inset-0 blur-xl bg-primary/20 rounded-full" />
             </div>
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              EasyMed
+              MedLinkr
             </h1>
             <UserLocation/>
 
@@ -255,7 +255,7 @@ export default function MedicineSearchApp() {
             <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
               Welcome to{" "}
               <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-                EasyMed
+                MedLinkr
               </span>
             </h2>
 
@@ -637,7 +637,7 @@ function LoginModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
                 <Pill className="h-10 w-10 text-primary" />
                 <div className="absolute inset-0 blur-xl bg-primary/20 rounded-full" />
               </div>
-              <h2 className="text-2xl font-bold text-foreground">Welcome to EasyMed</h2>
+              <h2 className="text-2xl font-bold text-foreground">Welcome to Medlinkr</h2>
             </div>
             <button
               onClick={onClose}

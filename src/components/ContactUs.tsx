@@ -11,7 +11,7 @@ export default function ContactUs() {
           <Pill className="h-8 w-8 text-primary animate-float" />
           <Link to="/">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              EasyMed
+              MedLinkr
             </h1>
           </Link>
         </div>
@@ -34,7 +34,7 @@ export default function ContactUs() {
           <div className="space-y-8 animate-scale-in">
             <div className="glass-card p-8 rounded-2xl border border-border/50">
               <h2 className="text-2xl font-bold text-foreground mb-6">Contact Information</h2>
-              
+
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
                   <div className="bg-gradient-primary p-3 rounded-lg">
@@ -42,8 +42,8 @@ export default function ContactUs() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                    <a href="mailto:support@easymed.com" className="text-primary hover:underline">
-                      support@easymed.com
+                    <a href="mailto:support@MedLinkr.com" className="text-primary hover:underline">
+                      support@MedLinkr.com
                     </a>
                     <p className="text-sm text-muted-foreground mt-1">
                       We respond within 24 hours
@@ -57,8 +57,8 @@ export default function ContactUs() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                    <a href="tel:1-800-EASYMED" className="text-primary hover:underline">
-                      1-800-EASYMED
+                    <a href="tel:1-800-MedLinkr" className="text-primary hover:underline">
+                      1-800-MedLinkr
                     </a>
                     <p className="text-sm text-muted-foreground mt-1">
                       Mon-Fri: 9AM - 6PM EST
@@ -185,7 +185,7 @@ export default function ContactUs() {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-2">How do I report incorrect pricing?</h3>
-              <p className="text-muted-foreground">Please email us at support@easymed.com with details, and we'll investigate immediately.</p>
+              <p className="text-muted-foreground">Please email us at support@MedLinkr.com with details, and we'll investigate immediately.</p>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-foreground mb-2">Is my data safe?</h3>

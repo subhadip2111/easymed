@@ -1,12 +1,12 @@
-# EasyMed — AI-Powered Medicine Finder & Prescription Analyzer
+# MedLinkr — AI-Powered Medicine Finder & Prescription Analyzer
 
-EasyMed is an intelligent healthcare platform that helps users instantly find medicines, discover similar alternatives based on composition, and purchase them online from trusted sources. It also allows users to upload prescriptions, where our AI model extracts all listed medicines and returns relevant alternatives verified by doctors.
+MedLinkr is an intelligent healthcare platform that helps users instantly find medicines, discover similar alternatives based on composition, and purchase them online from trusted sources. It also allows users to upload prescriptions, where our AI model extracts all listed medicines and returns relevant alternatives verified by doctors.
 
 ---
 
 ## 🚀 Overview
 
-EasyMed empowers users to:
+MedLinkr empowers users to:
 1. **Search Medicines Instantly** — Find any medicine by name and get authentic details.
 2. **Find Similar Medicines** — Discover substitute medicines with the same chemical composition or equivalent therapeutic effect.
 3. **Buy from Trusted Sources** — Get buy links from verified online pharmacies for both original and alternative medicines.
@@ -49,14 +49,14 @@ EasyMed empowers users to:
 
 ---
 
-## 🧩 How EasyMed Works
+## 🧩 How MedLinkr Works
 
 1. **User searches a medicine.**  
    → Backend retrieves details and lists all equivalent alternatives.  
 
 2. **User uploads a prescription.**  
    → AI extracts each medicine name.  
-   → EasyMed fetches relevant buy links and alternative options.  
+   → MedLinkr fetches relevant buy links and alternative options.  
 
 3. **Doctor verification.**  
    → Certified doctors validate critical or alternative medicine suggestions for user safety.  
@@ -76,17 +76,17 @@ EasyMed empowers users to:
 
 ## 🌍 Our Mission
 
-EasyMed strives to make medicine search, purchase, and validation **simple, fast, and trustworthy**. By combining AI technology and professional medical verification, we aim to create a reliable and transparent healthcare experience accessible to everyone.
+MedLinkr strives to make medicine search, purchase, and validation **simple, fast, and trustworthy**. By combining AI technology and professional medical verification, we aim to create a reliable and transparent healthcare experience accessible to everyone.
 
 ---
 
 ## 🤝 Collaboration & Contact
 
-If you’re a **doctor**, **pharmacist**, or **developer**, EasyMed welcomes collaborations to expand and refine healthcare accessibility.
+If you’re a **doctor**, **pharmacist**, or **developer**, MedLinkr welcomes collaborations to expand and refine healthcare accessibility.
 
-**Email:** contact@easymed.ai  
-**Website:** [www.easymed.ai](https://www.easymed.ai)
+**Email:** contact@MedLinkr.ai  
+**Website:** [www.MedLinkr.ai](https://www.MedLinkr.ai)
 
 ---
 
-© 2025 EasyMed. All rights reserved.
+© 2025 MedLinkr. All rights reserved.

@@ -11,7 +11,7 @@ export default function TermsOfService() {
           <Pill className="h-8 w-8 text-primary animate-float" />
           <Link to="/">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              EasyMed
+              MedLinkr
             </h1>
           </Link>
         </div>
@@ -32,14 +32,14 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">1. Acceptance of Terms</h2>
             <p className="text-muted-foreground leading-relaxed">
-              By accessing and using EasyMed, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.
+              By accessing and using MedLinkr, you accept and agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our service.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">2. Service Description</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              EasyMed is an informational platform that:
+              MedLinkr is an informational platform that:
             </p>
             <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
               <li>Aggregates medicine pricing information from various online pharmacies and retailers</li>
@@ -54,14 +54,14 @@ export default function TermsOfService() {
             <div className="bg-warning/10 border border-warning/30 rounded-lg p-6">
               <p className="text-foreground font-semibold mb-2">IMPORTANT: Always Consult Your Doctor</p>
               <p className="text-muted-foreground leading-relaxed">
-                EasyMed provides pricing information only. We are NOT a substitute for professional medical advice. Always consult with a qualified healthcare provider before purchasing or consuming any medicine. Never disregard professional medical advice or delay seeking it because of information found on EasyMed.
+                MedLinkr provides pricing information only. We are NOT a substitute for professional medical advice. Always consult with a qualified healthcare provider before purchasing or consuming any medicine. Never disregard professional medical advice or delay seeking it because of information found on MedLinkr.
               </p>
             </div>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">4. User Responsibilities</h2>
-            <p className="text-muted-foreground leading-relaxed mb-4">When using EasyMed, you agree to:</p>
+            <p className="text-muted-foreground leading-relaxed mb-4">When using MedLinkr, you agree to:</p>
             <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
               <li>Provide accurate information when searching for medicines</li>
               <li>Use the service for lawful purposes only</li>
@@ -81,14 +81,14 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">6. Third-Party Links</h2>
             <p className="text-muted-foreground leading-relaxed">
-              EasyMed contains links to third-party websites (pharmacies and retailers). We are not responsible for the content, privacy practices, or terms of these external sites. When you click on a pharmacy link, you are subject to that pharmacy's terms and policies.
+              MedLinkr contains links to third-party websites (pharmacies and retailers). We are not responsible for the content, privacy practices, or terms of these external sites. When you click on a pharmacy link, you are subject to that pharmacy's terms and policies.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">7. Limitation of Liability</h2>
             <p className="text-muted-foreground leading-relaxed">
-              EasyMed and its operators shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of the service, including but not limited to errors in pricing, product information, or availability.
+              MedLinkr and its operators shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from your use of the service, including but not limited to errors in pricing, product information, or availability.
             </p>
           </section>
 
@@ -102,14 +102,14 @@ export default function TermsOfService() {
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">9. Intellectual Property</h2>
             <p className="text-muted-foreground leading-relaxed">
-              All content on EasyMed, including design, text, graphics, and software, is the property of EasyMed and is protected by copyright and intellectual property laws. You may not copy, modify, or distribute our content without permission.
+              All content on MedLinkr, including design, text, graphics, and software, is the property of MedLinkr and is protected by copyright and intellectual property laws. You may not copy, modify, or distribute our content without permission.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">10. Service Modifications</h2>
             <p className="text-muted-foreground leading-relaxed">
-              We reserve the right to modify, suspend, or discontinue any aspect of EasyMed at any time without notice. We may also update these Terms of Service periodically.
+              We reserve the right to modify, suspend, or discontinue any aspect of MedLinkr at any time without notice. We may also update these Terms of Service periodically.
             </p>
           </section>
 
@@ -125,7 +125,7 @@ export default function TermsOfService() {
             <p className="text-muted-foreground leading-relaxed">
               For questions about these Terms of Service, please contact us at:
             </p>
-            <p className="text-primary font-semibold mt-4">legal@easymed.com</p>
+            <p className="text-primary font-semibold mt-4">legal@MedLinkr.com</p>
           </section>
         </div>
 

@@ -10,7 +10,7 @@ export default function AboutUs() {
           <Pill className="h-8 w-8 text-primary animate-float" />
           <Link to="/">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              EasyMed
+              MedLinkr
             </h1>
           </Link>
         </div>
@@ -20,7 +20,7 @@ export default function AboutUs() {
         {/* Hero Section */}
         <div className="text-center mb-16 animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            About <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">EasyMed</span>
+            About <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">MedLinkr</span>
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             We're on a mission to make healthcare more accessible and affordable by helping you find the best prices for your medicines.
@@ -88,7 +88,7 @@ export default function AboutUs() {
           <h2 className="text-3xl font-bold text-foreground mb-6">Our Story</h2>
           <div className="prose prose-lg max-w-none">
             <p className="text-muted-foreground leading-relaxed mb-4">
-              EasyMed was born from a simple observation: patients were struggling to find affordable medicines, often paying vastly different prices for the same medication at different pharmacies.
+              MedLinkr was born from a simple observation: patients were struggling to find affordable medicines, often paying vastly different prices for the same medication at different pharmacies.
             </p>
             <p className="text-muted-foreground leading-relaxed mb-4">
               Our founders, having experienced these challenges firsthand, decided to create a platform that brings transparency to medicine pricing. What started as a small project has grown into a comprehensive solution used by thousands of patients daily.
@@ -104,7 +104,7 @@ export default function AboutUs() {
             to="/"
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-primary text-white rounded-xl font-semibold hover:shadow-glow transition-all duration-300 transform hover:scale-105"
           >
-            Start Searching Medicines with EasyMed
+            Start Searching Medicines with MedLinkr
           </Link>
         </div>
       </main>

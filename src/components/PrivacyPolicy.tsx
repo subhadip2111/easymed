@@ -10,7 +10,7 @@ export default function PrivacyPolicy() {
           <Pill className="h-8 w-8 text-primary animate-float" />
           <Link to="/">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              EasyMed
+              MedLinkr
             </h1>
           </Link>
         </div>
@@ -31,7 +31,7 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">1. Information We Collect</h2>
             <p className="text-muted-foreground leading-relaxed mb-4">
-              EasyMed collects minimal information to provide our medicine comparison service:
+              MedLinkr collects minimal information to provide our medicine comparison service:
             </p>
             <ul className="list-disc list-inside text-muted-foreground space-y-2 ml-4">
               <li>Search queries for medicines</li>
@@ -96,14 +96,14 @@ export default function PrivacyPolicy() {
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">8. Children's Privacy</h2>
             <p className="text-muted-foreground leading-relaxed">
-              EasyMed does not knowingly collect information from children under 13. If you believe we have inadvertently collected such information, please contact us immediately.
+              MedLinkr does not knowingly collect information from children under 13. If you believe we have inadvertently collected such information, please contact us immediately.
             </p>
           </section>
 
           <section>
             <h2 className="text-2xl font-bold text-foreground mb-4">9. Changes to This Policy</h2>
             <p className="text-muted-foreground leading-relaxed">
-              We may update this privacy policy periodically. Changes will be posted on this page with an updated revision date. Continued use of EasyMed constitutes acceptance of these changes.
+              We may update this privacy policy periodically. Changes will be posted on this page with an updated revision date. Continued use of MedLinkr constitutes acceptance of these changes.
             </p>
           </section>
 
@@ -112,7 +112,7 @@ export default function PrivacyPolicy() {
             <p className="text-muted-foreground leading-relaxed">
               If you have questions about this privacy policy or our data practices, please contact us at:
             </p>
-            <p className="text-primary font-semibold mt-4">privacy@easymed.com</p>
+            <p className="text-primary font-semibold mt-4">privacy@MedLinkr.com</p>
           </section>
         </div>
 

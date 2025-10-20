@@ -10,7 +10,7 @@ export default function HowItWorks() {
           <Pill className="h-8 w-8 text-primary animate-float" />
           <Link to="/">
             <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              EasyMed
+              MedLinkr
             </h1>
           </Link>
         </div>
@@ -20,7 +20,7 @@ export default function HowItWorks() {
         {/* Hero Section */}
         <div className="text-center mb-16 animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            How <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">EasyMed</span> Works
+            How <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">MedLinkr</span> Works
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             Find the best prices for your medicines in three simple steps
@@ -122,7 +122,7 @@ export default function HowItWorks() {
 
         {/* Features */}
         <div className="glass-card p-8 md:p-12 rounded-2xl border border-border/50 mb-16 animate-fade-in">
-          <h2 className="text-3xl font-bold text-center text-foreground mb-12">Why Choose EasyMed?</h2>
+          <h2 className="text-3xl font-bold text-center text-foreground mb-12">Why Choose MedLinkr?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <h3 className="text-xl font-bold text-foreground mb-3">100% Free</h3>
