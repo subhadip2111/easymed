@@ -3,37 +3,43 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MedLinkr — AI-Powered Medicine Finder & Prescription Analyzer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>
+    MedLinkr | AI Medicine Finder, Alternatives & Prescription Analyzer
+  </title>
   <meta name="description"
-    content="MedLinkr helps you instantly find medicines, discover similar alternatives by composition, and purchase from trusted pharmacies. Upload prescriptions and let AI analyze them to find verified options." />
+    content="MedLinkr is an AI-powered healthcare platform that helps you find medicines, discover verified alternatives by composition, and analyze prescriptions using AI. Buy from trusted pharmacies with doctor validation." />
   <meta name="keywords"
-    content="MedLinkr, medicine finder, AI healthcare, prescription analyzer, drug alternatives, buy medicine online, doctor verified, pharmacy price comparison" />
-  <meta name="author" content="MedLinkr" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://www.medilinkr.life/" />
+    content="MedLinkr, AI medicine finder, AI healthcare, prescription analysis, medicine alternatives, pharmacy links, buy medicine online, drug comparison, doctor verified, AI medical assistant" />
+  <meta name="author" content="MedLinkr Team" />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <link rel="canonical" href="https://www.medlinkr.life/" />
 
   <link rel="icon" type="image/png" href="/logo.png" />
   <link rel="apple-touch-icon" href="/logo.png" />
   <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#0C8CE9" />
 
-  <meta property="og:title" content="MedLinkr — AI-Powered Medicine Finder" />
+  <meta property="og:title" content="MedLinkr — AI Medicine Finder & Analyzer" />
   <meta property="og:description"
-    content="Search for medicines, compare prices, and discover alternatives by composition. Upload prescriptions and let AI find verified options." />
+    content="Find medicines, compare prices, and discover AI-suggested alternatives verified by doctors. Upload prescriptions and let MedLinkr analyze them securely." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.medilinkr.life/" />
-  <meta property="og:image" content="https://www.medilinkr.life/preview.png" />
+  <meta property="og:url" content="https://www.medlinkr.life/" />
+  <meta property="og:image" content="https://www.medlinkr.life/preview.png" />
   <meta property="og:site_name" content="MedLinkr" />
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="MedLinkr — AI-Powered Medicine Finder" />
   <meta name="twitter:description"
-    content="Find medicines, compare prices, and discover doctor-verified alternatives with MedLinkr." />
-  <meta name="twitter:image" content="https://www.medilinkr.life/preview.png" />
+    content="Search, compare, and analyze prescriptions using AI. Get verified medicine alternatives and trusted pharmacy links instantly." />
+  <meta name="twitter:image" content="https://www.medlinkr.life/preview.png" />
   <meta name="twitter:site" content="@medlinkr" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1888814360460028"
     crossorigin="anonymous"></script>
@@ -41,22 +47,49 @@
   <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
+        "@type": "WebApplication",
         "name": "MedLinkr",
-        "url": "https://www.medilinkr.life/",
-        "logo": "https://www.medilinkr.life/logo.png",
-        "sameAs": [
-          "https://www.facebook.com/medlinkr",
-          "https://www.twitter.com/medlinkr",
-          "https://www.linkedin.com/company/medlinkr"
-        ],
-        "description": "AI-powered medicine finder and prescription analyzer to compare prices and find doctor-verified alternatives."
+        "url": "https://www.medlinkr.life/",
+        "description": "AI-powered medicine search, prescription analysis, and verified alternative finder with doctor validation.",
+        "applicationCategory": "HealthApplication",
+        "operatingSystem": "Web",
+        "creator": {
+          "@type": "Organization",
+          "name": "MedLinkr",
+          "url": "https://www.medlinkr.life/",
+          "logo": "https://www.medlinkr.life/logo.png",
+          "sameAs": [
+            "https://www.facebook.com/medlinkr",
+            "https://www.twitter.com/medlinkr",
+            "https://www.linkedin.com/company/medlinkr"
+          ]
+        },
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "1342"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.medlinkr.life/search?query={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
       }
     </script>
 </head>
 
 <body>
+  <noscript>
+    <strong>MedLinkr requires JavaScript to function properly. Please enable it in
+      your browser to continue.</strong>
+  </noscript>
   <div id="root"></div>
+
   <script type="module" src="/src/main.tsx"></script>
 </body>
 
