@@ -10,6 +10,7 @@ import { Footer } from "../Footer";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import UserLocation from "./UserLocation";
+import { PlayDragonGame } from "./DragonRunGame";
 
 
 interface BuyLink {
@@ -60,6 +61,25 @@ export default function MedicineSearchApp() {
   const [displayedSummary, setDisplayedSummary] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+ const [showGameModal, setShowGameModal] = useState(false);
+  const [loadingTimer, setLoadingTimer] = useState(0);
+
+
+   useEffect(() => {
+    if (isLoading) {
+      setLoadingTimer(0);
+      setShowGameModal(false);
+      
+      const timer = setTimeout(() => {
+        setShowGameModal(true);
+      }, 2000); // 2 seconds delay
+
+      return () => clearTimeout(timer);
+    } else {
+      setShowGameModal(false);
+      setLoadingTimer(0);
+    }
+  }, [isLoading]);
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -209,7 +229,12 @@ export default function MedicineSearchApp() {
     setSearchQuery("");
   };
   
-  if (isLoading) {
+  // if (isLoading) {
+  //   // PlayDragonGame
+  //   return <Loader />;
+  // }
+
+   if (isLoading && !showGameModal) {
     return <Loader />;
   }
 
@@ -242,7 +267,44 @@ export default function MedicineSearchApp() {
           )}
         </div>
       </header>
-      
+       {isLoading && showGameModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl p-8 max-w-2xl w-full animate-scale-in">
+            <div className="text-center mb-6">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <Pill className="h-8 w-8 text-blue-600 animate-bounce" />
+                <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                  Searching for Best Prices...
+                </h2>
+              </div>
+              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-4">
+                <p className="text-blue-800 font-medium">
+                   This is taking a bit longer than usual
+                </p>
+                <p className="text-sm text-blue-600 mt-1">
+                  We're searching the internet for the best medicine prices and alternatives
+                </p>
+              </div>
+              <p className="text-lg text-gray-700 mb-2">
+                Meanwhile, refresh your mind with a quick game! 🎮
+              </p>
+            </div>
+
+            <PlayDragonGame/>
+
+            <div className="mt-6 text-center">
+              <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
+                <div className="flex gap-1">
+                  <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                </div>
+                <p>Fetching results in background...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {!accessToken ? (
         // Login Required Screen
         <section className="py-16 px-4 min-h-[80vh] flex items-center justify-center">
