@@ -10,8 +10,7 @@ import { Footer } from "../Footer";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import UserLocation from "./UserLocation";
-import { PlayDragonGame } from "./DragonRunGame";
-
+import SnakeGame from "./DragonRunGame";
 
 interface BuyLink {
   site: string;
@@ -230,7 +229,7 @@ export default function MedicineSearchApp() {
   };
   
   // if (isLoading) {
-  //   // PlayDragonGame
+  //   // SnakeGam
   //   return <Loader />;
   // }
 
@@ -290,7 +289,7 @@ export default function MedicineSearchApp() {
               </p>
             </div>
 
-            <PlayDragonGame/>
+            <SnakeGame/>
 
             <div className="mt-6 text-center">
               <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
