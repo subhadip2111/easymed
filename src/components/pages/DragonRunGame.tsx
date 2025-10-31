@@ -13,7 +13,7 @@ type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
 const GRID_SIZE = 20;
 const CELL_SIZE = 20; // This makes the canvas 400x400 (20 * 20)
-const INITIAL_SPEED = 150;
+const INITIAL_SPEED = 250;
 const SPEED_INCREMENT = 5;
 
 export default function SnakeGame() {
@@ -29,7 +29,7 @@ export default function SnakeGame() {
   const [isPaused, setIsPaused] = useState(false);
   const [speed, setSpeed] = useState(INITIAL_SPEED);
   
-  const gameLoopRef = useRef<NodeJS.Timeout | null>(null);
+  const gameLoopRef = useRef<number | null>(null);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
   const generateFood = useCallback((currentSnake: Position[]): Position => {
