@@ -1,8 +1,80 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate, } from "react-router-dom";
 import { Pill, Mail, Phone, MapPin, MessageSquare } from "lucide-react";
 import { Footer } from "./Footer";
+import { useState } from "react";
+import { sendContactUsForm } from "../apis/contact-us";
 
 export default function ContactUs() {
+  const navigate = useNavigate();
+  const [contactUs, setContactUs] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  });
+
+
+  const validate = () => {
+    const newErrors: Record<string, string> = {};
+
+    if (!contactUs.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!contactUs.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(contactUs.email)) {
+      newErrors.email = "Enter a valid email";
+    }
+
+    if (!contactUs.subject.trim()) {
+      newErrors.subject = "Subject is required";
+    }
+
+    if (contactUs.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters";
+    }
+
+    return newErrors;
+  };
+
+
+  async function handleChange(e: any) {
+    setContactUs({ ...contactUs, [e.target.name]: e.target.value });
+  }
+
+  async function handelSubmit(e: any) {
+    e.preventDefault();
+
+    // Run validation and surface any errors to the user
+    const errors = validate();
+    if (Object.keys(errors).length > 0) {
+      // Join all error messages into a single alert for now
+      alert(Object.values(errors).join('\n'));
+      return;
+    }
+
+    console.log(contactUs);
+    try {
+      const contact_usData = await sendContactUsForm(contactUs);
+      if (contact_usData) {
+        alert("🎉 Thank you for submitting your query! We’ll get back to you soon.");
+        setTimeout(() => navigate("/"), 3000);
+      } else {
+        alert("Failed to send message. Please try again later.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("An error occurred while sending your message. Please try again later.");
+    } finally {
+      setContactUs({
+        name: "",
+        email: "",
+        subject: "",
+        message: ""
+      });
+    }
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
       {/* Header */}
@@ -42,8 +114,8 @@ export default function ContactUs() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground mb-1">Email</h3>
-                    <a href="mailto:support@MedLinkr.com" className="text-primary hover:underline">
-                      support@MedLinkr.com
+                    <a href="mailto:medilinkr.healthcare@gmail.com" className="text-primary hover:underline">
+                      medilinkr.healthcare@gmail.com
                     </a>
                     <p className="text-sm text-muted-foreground mt-1">
                       We respond within 24 hours
@@ -56,29 +128,18 @@ export default function ContactUs() {
                     <Phone className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1">Phone</h3>
-                    <a href="tel:1-800-MedLinkr" className="text-primary hover:underline">
+                    {/* <h3 className="font-semibold text-foreground mb-1">Phone</h3> */}
+                    {/* <a href="tel:1-800-MedLinkr" className="text-primary hover:underline">
                       1-800-MedLinkr
-                    </a>
+                    </a> */}
                     <p className="text-sm text-muted-foreground mt-1">
                       Mon-Fri: 9AM - 6PM EST
                     </p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4">
-                  <div className="bg-gradient-primary p-3 rounded-lg">
-                    <MapPin className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-foreground mb-1">Office</h3>
-                    <p className="text-muted-foreground">
-                      123 Healthcare Avenue<br />
-                      San Francisco, CA 94102<br />
-                      United States
-                    </p>
-                  </div>
-                </div>
+
+
               </div>
             </div>
 
@@ -86,16 +147,16 @@ export default function ContactUs() {
               <h3 className="text-xl font-bold text-foreground mb-4">Quick Links</h3>
               <div className="space-y-3">
                 <Link to="/about" className="block text-primary hover:underline">
-                  → About Us
+                  About Us
                 </Link>
                 <Link to="/how-it-works" className="block text-primary hover:underline">
-                  → How It Works
+                  How It Works
                 </Link>
                 <Link to="/privacy-policy" className="block text-primary hover:underline">
-                  → Privacy Policy
+                  Privacy Policy
                 </Link>
                 <Link to="/terms-of-service" className="block text-primary hover:underline">
-                  → Terms of Service
+                  Terms of Service
                 </Link>
               </div>
             </div>
@@ -104,7 +165,7 @@ export default function ContactUs() {
           {/* Contact Form */}
           <div className="glass-card p-8 rounded-2xl border border-border/50 animate-scale-in" style={{ animationDelay: '0.1s' }}>
             <h2 className="text-2xl font-bold text-foreground mb-6">Send us a Message</h2>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handelSubmit}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                   Your Name
@@ -113,6 +174,8 @@ export default function ContactUs() {
                   type="text"
                   id="name"
                   name="name"
+                  value={contactUs.name}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                   placeholder="John Doe"
                 />
@@ -126,6 +189,8 @@ export default function ContactUs() {
                   type="email"
                   id="email"
                   name="email"
+                  value={contactUs.email}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                   placeholder="john@example.com"
                 />
@@ -139,6 +204,8 @@ export default function ContactUs() {
                   type="text"
                   id="subject"
                   name="subject"
+                  value={contactUs.subject}
+                  onChange={handleChange}
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all"
                   placeholder="How can we help?"
                 />
@@ -151,6 +218,8 @@ export default function ContactUs() {
                 <textarea
                   id="message"
                   name="message"
+                  value={contactUs.message}
+                  onChange={handleChange}
                   rows={6}
                   className="w-full px-4 py-3 bg-background border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all resize-none"
                   placeholder="Tell us more about your inquiry..."

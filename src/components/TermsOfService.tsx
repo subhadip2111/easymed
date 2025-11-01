@@ -125,7 +125,7 @@ export default function TermsOfService() {
             <p className="text-muted-foreground leading-relaxed">
               For questions about these Terms of Service, please contact us at:
             </p>
-            <p className="text-primary font-semibold mt-4">legal@MedLinkr.com</p>
+            <p className="text-primary font-semibold mt-4">medilinkr.healthcare@gmail.com</p>
           </section>
         </div>
 

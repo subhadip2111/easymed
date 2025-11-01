@@ -228,10 +228,7 @@ export default function MedicineSearchApp() {
     setSearchQuery("");
   };
   
-  // if (isLoading) {
-  //   // SnakeGam
-  //   return <Loader />;
-  // }
+
 
    if (isLoading && !showGameModal) {
     return <Loader />;

@@ -1,7 +1,7 @@
 // Suggested filename: SnakeGame.tsx
 
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { RotateCcw, Play, Pause, Trophy, Gamepad2 } from 'lucide-react';
+import { RotateCcw, Play, Pause, Trophy, Gamepad2, Maximize2, Minimize2 } from 'lucide-react';
 import { Button } from '../ui/button'; // Assuming shadcn/ui
 
 interface Position {
@@ -11,13 +11,12 @@ interface Position {
 
 type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
-const GRID_SIZE = 20;
-const CELL_SIZE = 20; // This makes the canvas 400x400 (20 * 20)
 const INITIAL_SPEED = 250;
 const SPEED_INCREMENT = 5;
 
 export default function SnakeGame() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const gameContainerRef = useRef<HTMLDivElement>(null);
   const [snake, setSnake] = useState<Position[]>([{ x: 10, y: 10 }]);
   const [food, setFood] = useState<Position>({ x: 15, y: 15 });
   const [direction, setDirection] = useState<Direction>('RIGHT');
@@ -28,23 +27,75 @@ export default function SnakeGame() {
   const [gameStarted, setGameStarted] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [speed, setSpeed] = useState(INITIAL_SPEED);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [gridSize, setGridSize] = useState(20);
+  const [cellSize, setCellSize] = useState(20);
   
   const gameLoopRef = useRef<number | null>(null);
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  // Calculate responsive grid and cell size
+  const calculateGridSize = useCallback(() => {
+    if (!gameContainerRef.current) return;
+
+    const container = gameContainerRef.current;
+    const availableWidth = container.clientWidth - 32; // Account for padding
+    const availableHeight = container.clientHeight - 200; // Account for header and controls
+    
+    const maxGridSize = isMobile ? 25 : 30;
+    const minCellSize = isMobile ? 15 : 18;
+    
+    // Calculate optimal grid size based on available space
+    const calculatedCellSize = Math.max(
+      minCellSize,
+      Math.floor(Math.min(availableWidth, availableHeight) / maxGridSize)
+    );
+    
+    const calculatedGridSize = Math.min(
+      maxGridSize,
+      Math.floor(Math.min(availableWidth, availableHeight) / calculatedCellSize)
+    );
+
+    setCellSize(calculatedCellSize);
+    setGridSize(calculatedGridSize);
+  }, [isMobile]);
+
+  // Handle resize and fullscreen changes
+  useEffect(() => {
+    calculateGridSize();
+    
+    const handleResize = () => {
+      calculateGridSize();
+    };
+
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+      // Recalculate after a brief delay to ensure DOM has updated
+      setTimeout(calculateGridSize, 100);
+    };
+
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, [calculateGridSize]);
 
   const generateFood = useCallback((currentSnake: Position[]): Position => {
     let newFood: Position;
     do {
       newFood = {
-        x: Math.floor(Math.random() * GRID_SIZE),
-        y: Math.floor(Math.random() * GRID_SIZE)
+        x: Math.floor(Math.random() * gridSize),
+        y: Math.floor(Math.random() * gridSize)
       };
     } while (currentSnake.some(segment => segment.x === newFood.x && segment.y === newFood.y));
     return newFood;
-  }, []);
+  }, [gridSize]);
 
   const resetGame = useCallback(() => {
-    const initialSnake = [{ x: 10, y: 10 }];
+    const initialSnake = [{ x: Math.floor(gridSize / 2), y: Math.floor(gridSize / 2) }];
     setSnake(initialSnake);
     setFood(generateFood(initialSnake));
     setDirection('RIGHT');
@@ -54,16 +105,16 @@ export default function SnakeGame() {
     setGameStarted(true);
     setIsPaused(false);
     setSpeed(INITIAL_SPEED);
-  }, [generateFood]);
+  }, [generateFood, gridSize]);
 
   const checkCollision = useCallback((head: Position, body: Position[]): boolean => {
     // Wall collision
-    if (head.x < 0 || head.x >= GRID_SIZE || head.y < 0 || head.y >= GRID_SIZE) {
+    if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
       return true;
     }
     // Self collision
-    return body.some(segment => segment.x === head.x && segment.y === head.y);
-  }, []);
+    return body.slice(1).some(segment => segment.x === head.x && segment.y === head.y);
+  }, [gridSize]);
 
   const moveSnake = useCallback(() => {
     if (!gameStarted || gameOver || isPaused) return;
@@ -100,7 +151,7 @@ export default function SnakeGame() {
       if (head.x === food.x && head.y === food.y) {
         setScore(prev => prev + 10);
         setFood(generateFood(newSnake));
-        setSpeed(prev => Math.max(50, prev - SPEED_INCREMENT));
+        setSpeed(prev => Math.max(80, prev - SPEED_INCREMENT));
       } else {
         newSnake.pop();
       }
@@ -109,9 +160,33 @@ export default function SnakeGame() {
     });
   }, [nextDirection, gameStarted, gameOver, isPaused, food, checkCollision, generateFood, score]);
 
+  // Toggle fullscreen
+  const toggleFullscreen = async () => {
+    if (!gameContainerRef.current) return;
+
+    try {
+      if (!document.fullscreenElement) {
+        await gameContainerRef.current.requestFullscreen();
+        setIsFullscreen(true);
+      } else {
+        await document.exitFullscreen();
+        setIsFullscreen(false);
+      }
+    } catch (error) {
+      console.error('Fullscreen error:', error);
+    }
+  };
+
   // Handle keyboard controls
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
+      // Fullscreen toggle (F key)
+      if (e.code === 'KeyF') {
+        e.preventDefault();
+        toggleFullscreen();
+        return;
+      }
+
       if (!gameStarted && !gameOver) {
         if (e.code === 'Space' || e.code.startsWith('Arrow')) {
           e.preventDefault();
@@ -129,6 +204,11 @@ export default function SnakeGame() {
       if (e.code === 'Space' && gameStarted && !gameOver) {
         e.preventDefault();
         setIsPaused(prev => !prev);
+        return;
+      }
+
+      if (e.code === 'Escape' && isFullscreen) {
+        toggleFullscreen();
         return;
       }
 
@@ -163,9 +243,11 @@ export default function SnakeGame() {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [gameStarted, gameOver, resetGame]);
+  }, [gameStarted, gameOver, resetGame, isFullscreen]);
 
-  // Touch controls for mobile
+  // Touch controls for mobile with swipe detection
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
     if (!gameStarted && !gameOver) {
       resetGame();
@@ -178,19 +260,26 @@ export default function SnakeGame() {
     }
 
     const touch = e.touches[0];
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }, [gameStarted, gameOver, resetGame]);
 
-    const rect = canvas.getBoundingClientRect();
-    const touchX = touch.clientX - rect.left;
-    const touchY = touch.clientY - rect.top;
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
 
-    const deltaX = touchX - centerX;
-    const deltaY = touchY - centerY;
+    const touch = e.changedTouches[0];
+    const endX = touch.clientX;
+    const endY = touch.clientY;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+    const startX = touchStartRef.current.x;
+    const startY = touchStartRef.current.y;
+
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    const minSwipeDistance = 30; // Minimum distance for a swipe
+
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance) {
+      // Horizontal swipe
       setNextDirection(prev => {
         const newDir = deltaX > 0 ? 'RIGHT' : 'LEFT';
         if ((prev === 'LEFT' && newDir === 'RIGHT') || (prev === 'RIGHT' && newDir === 'LEFT')) {
@@ -198,7 +287,8 @@ export default function SnakeGame() {
         }
         return newDir;
       });
-    } else {
+    } else if (Math.abs(deltaY) > minSwipeDistance) {
+      // Vertical swipe
       setNextDirection(prev => {
         const newDir = deltaY > 0 ? 'DOWN' : 'UP';
         if ((prev === 'UP' && newDir === 'DOWN') || (prev === 'DOWN' && newDir === 'UP')) {
@@ -207,7 +297,9 @@ export default function SnakeGame() {
         return newDir;
       });
     }
-  }, [gameStarted, gameOver, resetGame]);
+
+    touchStartRef.current = null;
+  }, []);
 
   // Game loop
   useEffect(() => {
@@ -227,71 +319,116 @@ export default function SnakeGame() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    // Set canvas size based on calculated dimensions
+    canvas.width = gridSize * cellSize;
+    canvas.height = gridSize * cellSize;
+
     // Clear canvas with retro green background
     ctx.fillStyle = '#9bbc0f';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Draw grid
-    ctx.strokeStyle = '#8bac0f';
-    ctx.lineWidth = 1;
-    for (let i = 0; i <= GRID_SIZE; i++) {
-      ctx.beginPath();
-      ctx.moveTo(i * CELL_SIZE, 0);
-      ctx.lineTo(i * CELL_SIZE, GRID_SIZE * CELL_SIZE);
-      ctx.stroke();
+    // Draw grid (only for larger cells)
+    if (cellSize > 15) {
+      ctx.strokeStyle = '#8bac0f';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= gridSize; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * cellSize, 0);
+        ctx.lineTo(i * cellSize, gridSize * cellSize);
+        ctx.stroke();
 
-      ctx.beginPath();
-      ctx.moveTo(0, i * CELL_SIZE);
-      ctx.lineTo(GRID_SIZE * CELL_SIZE, i * CELL_SIZE);
-      ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(0, i * cellSize);
+        ctx.lineTo(gridSize * cellSize, i * cellSize);
+        ctx.stroke();
+      }
     }
 
     // Draw food
+    const foodPadding = Math.max(2, cellSize * 0.1);
     ctx.fillStyle = '#0f380f';
     ctx.fillRect(
-      food.x * CELL_SIZE + 2,
-      food.y * CELL_SIZE + 2,
-      CELL_SIZE - 4,
-      CELL_SIZE - 4
+      food.x * cellSize + foodPadding,
+      food.y * cellSize + foodPadding,
+      cellSize - foodPadding * 2,
+      cellSize - foodPadding * 2
     );
 
     // Draw snake
+    const snakePadding = Math.max(1, cellSize * 0.05);
     snake.forEach((segment, index) => {
       ctx.fillStyle = index === 0 ? '#0f380f' : '#306230';
       ctx.fillRect(
-        segment.x * CELL_SIZE + 1,
-        segment.y * CELL_SIZE + 1,
-        CELL_SIZE - 2,
-        CELL_SIZE - 2
+        segment.x * cellSize + snakePadding,
+        segment.y * cellSize + snakePadding,
+        cellSize - snakePadding * 2,
+        cellSize - snakePadding * 2
       );
 
-      // Draw eyes on head
-      if (index === 0) {
+      // Draw eyes on head (only for larger cells)
+      if (index === 0 && cellSize > 12) {
         ctx.fillStyle = '#9bbc0f';
-        const eyeSize = 3;
-        const eyeOffset = 6;
+        const eyeSize = Math.max(2, cellSize * 0.15);
+        const eyeOffset = cellSize * 0.3;
         
         if (direction === 'RIGHT') {
-          ctx.fillRect(segment.x * CELL_SIZE + eyeOffset + 6, segment.y * CELL_SIZE + 5, eyeSize, eyeSize);
-          ctx.fillRect(segment.x * CELL_SIZE + eyeOffset + 6, segment.y * CELL_SIZE + 12, eyeSize, eyeSize);
+          ctx.fillRect(
+            segment.x * cellSize + cellSize - eyeOffset - eyeSize,
+            segment.y * cellSize + eyeOffset,
+            eyeSize, eyeSize
+          );
+          ctx.fillRect(
+            segment.x * cellSize + cellSize - eyeOffset - eyeSize,
+            segment.y * cellSize + cellSize - eyeOffset - eyeSize,
+            eyeSize, eyeSize
+          );
         } else if (direction === 'LEFT') {
-          ctx.fillRect(segment.x * CELL_SIZE + 5, segment.y * CELL_SIZE + 5, eyeSize, eyeSize);
-          ctx.fillRect(segment.x * CELL_SIZE + 5, segment.y * CELL_SIZE + 12, eyeSize, eyeSize);
+          ctx.fillRect(
+            segment.x * cellSize + eyeOffset,
+            segment.y * cellSize + eyeOffset,
+            eyeSize, eyeSize
+          );
+          ctx.fillRect(
+            segment.x * cellSize + eyeOffset,
+            segment.y * cellSize + cellSize - eyeOffset - eyeSize,
+            eyeSize, eyeSize
+          );
         } else if (direction === 'UP') {
-          ctx.fillRect(segment.x * CELL_SIZE + 5, segment.y * CELL_SIZE + 5, eyeSize, eyeSize);
-          ctx.fillRect(segment.x * CELL_SIZE + 12, segment.y * CELL_SIZE + 5, eyeSize, eyeSize);
-        } else {
-          ctx.fillRect(segment.x * CELL_SIZE + 5, segment.y * CELL_SIZE + 12, eyeSize, eyeSize);
-          ctx.fillRect(segment.x * CELL_SIZE + 12, segment.y * CELL_SIZE + 12, eyeSize, eyeSize);
+          ctx.fillRect(
+            segment.x * cellSize + eyeOffset,
+            segment.y * cellSize + eyeOffset,
+            eyeSize, eyeSize
+          );
+          ctx.fillRect(
+            segment.x * cellSize + cellSize - eyeOffset - eyeSize,
+            segment.y * cellSize + eyeOffset,
+            eyeSize, eyeSize
+          );
+        } else { // DOWN
+          ctx.fillRect(
+            segment.x * cellSize + eyeOffset,
+            segment.y * cellSize + cellSize - eyeOffset - eyeSize,
+            eyeSize, eyeSize
+          );
+          ctx.fillRect(
+            segment.x * cellSize + cellSize - eyeOffset - eyeSize,
+            segment.y * cellSize + cellSize - eyeOffset - eyeSize,
+            eyeSize, eyeSize
+          );
         }
       }
     });
-  }, [snake, food, direction]);
+  }, [snake, food, direction, gridSize, cellSize]);
 
   return (
-    <div className="min-h-screen bg-[#0f380f] flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl">
-        <div className="bg-[#9bbc0f] rounded-3xl shadow-2xl p-4 sm:p-8 border-8 border-[#0f380f]">
+    <div 
+      ref={gameContainerRef}
+      className="min-h-screen bg-[#0f380f] flex items-center justify-center p-4 w-full"
+    >
+      <div className={`w-full max-w-6xl ${isFullscreen ? 'h-screen flex items-center justify-center' : ''}`}>
+        <div className={`bg-[#9bbc0f] rounded-3xl shadow-2xl p-4 sm:p-8 border-8 border-[#0f380f] ${
+          isFullscreen ? 'w-full h-full max-h-screen rounded-none border-none' : ''
+        }`}>
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4">
             <h1 className="text-3xl sm:text-5xl font-bold text-[#0f380f] font-mono">
@@ -309,15 +446,17 @@ export default function SnakeGame() {
             </div>
           </div>
 
-          {/* Canvas */}
-          <div className="relative mb-4 flex justify-center">
+          {/* Canvas Container */}
+          <div className="relative mb-4 flex justify-center items-center">
             <canvas
               ref={canvasRef}
-              width={GRID_SIZE * CELL_SIZE}
-              height={GRID_SIZE * CELL_SIZE}
-              className="rounded-lg shadow-2xl touch-none"
-              style={{ touchAction: 'none' }}
+              className="rounded-lg shadow-2xl touch-none max-w-full max-h-full"
+              style={{ 
+                touchAction: 'none',
+                maxHeight: isFullscreen ? 'calc(100vh - 200px)' : 'none'
+              }}
               onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
             />
 
             {/* Overlays */}
@@ -329,23 +468,37 @@ export default function SnakeGame() {
                   </h2>
                   {isMobile ? (
                     <p className="mb-4 text-sm sm:text-base">
-                      Tap the screen to start.
+                      Swipe to move the snake.
                       <br />
-                      Tap in a direction to move.
+                      Tap to start.
                     </p>
                   ) : (
-                    <p className="mb-4 text-sm sm:text-base">
-                      Press <kbd className="px-2 py-1 bg-gray-200 text-gray-800 rounded">SPACE</kbd> or <kbd className="px-2 py-1 bg-gray-200 text-gray-800 rounded">ARROWS</kbd> to start.
-                    </p>
+                    <div className="mb-4 text-sm sm:text-base space-y-2">
+                      <p>Use <kbd className="px-2 py-1 bg-gray-200 text-gray-800 rounded">ARROWS</kbd> or <kbd className="px-2 py-1 bg-gray-200 text-gray-800 rounded">WASD</kbd> to move</p>
+                      <p>Press <kbd className="px-2 py-1 bg-gray-200 text-gray-800 rounded">F</kbd> for fullscreen</p>
+                      <p>Press <kbd className="px-2 py-1 bg-gray-200 text-gray-800 rounded">SPACE</kbd> to pause</p>
+                    </div>
                   )}
-                  <Button
-                    onClick={resetGame}
-                    variant="default"
-                    className="bg-[#306230] hover:bg-[#0f380f] text-[#9bbc0f] font-bold py-3 px-6 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 mx-auto font-mono"
-                  >
-                    <Play className="h-5 w-5" />
-                    Start Game
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    <Button
+                      onClick={resetGame}
+                      variant="default"
+                      className="bg-[#306230] hover:bg-[#0f380f] text-[#9bbc0f] font-bold py-3 px-6 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 font-mono"
+                    >
+                      <Play className="h-5 w-5" />
+                      Start Game
+                    </Button>
+                    {!isMobile && (
+                      <Button
+                        onClick={toggleFullscreen}
+                        variant="outline"
+                        className="border-[#0f380f] text-[#0f380f] hover:bg-[#0f380f] hover:text-[#9bbc0f] font-bold py-3 px-4 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 font-mono"
+                      >
+                        {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                        {isFullscreen ? 'Exit' : 'Fullscreen'}
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -360,14 +513,26 @@ export default function SnakeGame() {
                   {score >= highScore && score > 0 && (
                     <p className="text-sm font-bold mb-4">🎉 NEW HIGH SCORE!</p>
                   )}
-                  <Button
-                    onClick={resetGame}
-                    variant="default"
-                    className="bg-[#0f380f] hover:bg-[#306230] text-[#9bbc0f] font-bold py-3 px-6 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 mx-auto font-mono"
-                  >
-                    <RotateCcw className="h-5 w-5" />
-                    Play Again
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    <Button
+                      onClick={resetGame}
+                      variant="default"
+                      className="bg-[#0f380f] hover:bg-[#306230] text-[#9bbc0f] font-bold py-3 px-6 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 font-mono"
+                    >
+                      <RotateCcw className="h-5 w-5" />
+                      Play Again
+                    </Button>
+                    {!isMobile && (
+                      <Button
+                        onClick={toggleFullscreen}
+                        variant="outline"
+                        className="border-[#0f380f] text-[#0f380f] hover:bg-[#0f380f] hover:text-[#9bbc0f] font-bold py-3 px-4 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 font-mono"
+                      >
+                        {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                        {isFullscreen ? 'Exit' : 'Fullscreen'}
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
@@ -376,26 +541,73 @@ export default function SnakeGame() {
               <div className="absolute inset-0 bg-[#0f380f]/90 backdrop-blur-sm rounded-lg flex items-center justify-center">
                 <div className="bg-[#9bbc0f] text-[#0f380f] rounded-lg p-6 sm:p-8 text-center shadow-2xl">
                   <h3 className="text-2xl font-bold mb-4 font-mono">Paused</h3>
-                  <Button
-                    onClick={() => setIsPaused(false)}
-                    variant="default"
-                    className="bg-[#0f380f] hover:bg-[#306230] text-[#9bbc0f] font-bold py-3 px-6 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 mx-auto font-mono"
-                  >
-                    <Play className="h-5 w-5" />
-                    Resume
-                  </Button>
+                  <div className="flex flex-col sm:flex-row gap-2 justify-center">
+                    <Button
+                      onClick={() => setIsPaused(false)}
+                      variant="default"
+                      className="bg-[#0f380f] hover:bg-[#306230] text-[#9bbc0f] font-bold py-3 px-6 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 font-mono"
+                    >
+                      <Play className="h-5 w-5" />
+                      Resume
+                    </Button>
+                    {!isMobile && (
+                      <Button
+                        onClick={toggleFullscreen}
+                        variant="outline"
+                        className="border-[#0f380f] text-[#0f380f] hover:bg-[#0f380f] hover:text-[#9bbc0f] font-bold py-3 px-4 rounded-lg shadow-lg transition-all flex items-center justify-center gap-2 font-mono"
+                      >
+                        {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                        {isFullscreen ? 'Exit' : 'Fullscreen'}
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Instructions */}
-          <div className="text-center text-sm text-[#0f380f] font-mono">
-            {isMobile ? (
-              <p>Tap in a direction to move. Don't hit the walls!</p>
-            ) : (
-              <p>Use <kbd className="px-2 py-1 bg-[#306230] text-[#9bbc0f] rounded">ARROWS</kbd> or <kbd className="px-2 py-1 bg-[#306230] text-[#9bbc0f] rounded">WASD</kbd> to move. Don't hit the walls!</p>
-            )}
+          {/* Controls */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-center text-sm text-[#0f380f] font-mono">
+              {isMobile ? (
+                <p>Swipe to move. Don't hit the walls!</p>
+              ) : (
+                <div className="space-y-1">
+                  <p>Use <kbd className="px-2 py-1 bg-[#306230] text-[#9bbc0f] rounded">ARROWS</kbd> or <kbd className="px-2 py-1 bg-[#306230] text-[#9bbc0f] rounded">WASD</kbd> to move</p>
+                  <p>Press <kbd className="px-2 py-1 bg-[#306230] text-[#9bbc0f] rounded">F</kbd> for fullscreen • <kbd className="px-2 py-1 bg-[#306230] text-[#9bbc0f] rounded">SPACE</kbd> to pause</p>
+                </div>
+              )}
+            </div>
+            
+            <div className="flex items-center gap-2">
+              {!isMobile && (
+                <Button
+                  onClick={toggleFullscreen}
+                  variant="outline"
+                  size="sm"
+                  className="border-[#0f380f] text-[#0f380f] hover:bg-[#0f380f] hover:text-[#9bbc0f] font-mono"
+                >
+                  {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+                </Button>
+              )}
+              <Button
+                onClick={() => setIsPaused(!isPaused)}
+                disabled={!gameStarted || gameOver}
+                variant="outline"
+                size="sm"
+                className="border-[#0f380f] text-[#0f380f] hover:bg-[#0f380f] hover:text-[#9bbc0f] font-mono"
+              >
+                {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+              </Button>
+              <Button
+                onClick={resetGame}
+                variant="outline"
+                size="sm"
+                className="border-[#0f380f] text-[#0f380f] hover:bg-[#0f380f] hover:text-[#9bbc0f] font-mono"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
