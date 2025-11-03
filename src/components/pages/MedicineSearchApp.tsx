@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Search, Upload, Pill, AlertCircle, X, Check } from "lucide-react";
 import { bulkSearchMedicinesThroughtInternet, searchMedicines, uploadPrescriptionAndgetAnalisisData } from "../../apis/medicineApis";
-import Loader from "../Loader";
+// import Loader from "../Loader";
 import { MedicineCard } from "./MedicineCard";
 import { BulkMedicineCard } from "./BulkMedicineCard";
 import { AdSection } from "../AdSection";
@@ -10,7 +10,11 @@ import { Footer } from "../Footer";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
 import UserLocation from "./UserLocation";
-import SnakeGame from "./DragonRunGame";
+// import SnakeGame from "./DragonRunGame";
+import { MedicineSearchSkeleton } from "../SceletonLoader";
+import { RatingReviewPopup } from "./RatingReview";
+import MedLinkrCarousel from "../SwipperBanner";
+import BlogSection from "../BlogSection";
 
 interface BuyLink {
   site: string;
@@ -62,6 +66,7 @@ export default function MedicineSearchApp() {
   const fileInputRef = useRef<HTMLInputElement>(null);
  const [showGameModal, setShowGameModal] = useState(false);
   const [loadingTimer, setLoadingTimer] = useState(0);
+const [showRatingPopup, setShowRatingPopup] = useState(false);
 
 
    useEffect(() => {
@@ -147,6 +152,8 @@ export default function MedicineSearchApp() {
   
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
+    const userInfo= localStorage.getItem('user');
+    console.log("userInfo",userInfo)
     setAccessToken(token);
   }, []);
 
@@ -230,8 +237,8 @@ export default function MedicineSearchApp() {
   
 
 
-   if (isLoading && !showGameModal) {
-    return <Loader />;
+   if (isLoading ) {
+    return <MedicineSearchSkeleton />;
   }
 
   return (
@@ -286,7 +293,7 @@ export default function MedicineSearchApp() {
               </p>
             </div>
 
-            <SnakeGame/>
+            <MedicineSearchSkeleton/>
 
             <div className="mt-6 text-center">
               <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
@@ -615,8 +622,15 @@ export default function MedicineSearchApp() {
         </div>
       )}
 
-      <AdSection />
-      <ReviewsSection />
+      <BlogSection/>
+<button
+  onClick={() => setShowRatingPopup(true)}
+  className="fixed bottom-6 left-6 z-30 px-4 py-3 bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all font-semibold"
+>
+  Rate Us ⭐
+</button>
+
+<RatingReviewPopup isOpen={showRatingPopup} onClose={() => setShowRatingPopup(false)} />      <ReviewsSection />
       <Footer />
 
       {/* Custom animations */}
@@ -676,6 +690,10 @@ function LoginModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
     console.log("Initiating Google login...", result);
 
     const credential = GoogleAuthProvider.credentialFromResult(result);
+    await localStorage.setItem('user', JSON.stringify(result.user));
+
+
+    console.log("Google credential:", credential);
     const accessToken = credential?.accessToken;
     if (accessToken) {
       localStorage.setItem('accessToken', accessToken);
